@@ -2,7 +2,7 @@
 
 Learn Laravel 5.8 by creating an Instagram clone in this full tutorial course for beginners. Laravel is a free, open-source PHP web framework used for creating web applications.
 
-Current place in Tutorial: https://www.youtube.com/watch?v=ImtZ5yENzgE&t=4130s
+Current place in Tutorial: https://youtu.be/ImtZ5yENzgE?t=8360
 
 ## Fixes for Laravel 6.x
 

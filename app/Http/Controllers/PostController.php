@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
 class PostController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     //
     public function create()
     {
@@ -14,6 +18,18 @@ class PostController extends Controller
 
     public function store()
     {
-        dd(request()->all());
+        $data = request()->validate([
+            'caption' => 'required',
+            'image' => [ 'required', 'image' ]
+        ]);
+
+        $imagePath = request('image')->store('uploads', 'public');
+
+        auth()->user()->posts()->create([
+            'caption' => $data['caption'],
+            'image' => $imagePath
+        ]);
+
+        return redirect('/profile/' . auth()->user()->id);
     }
 }
