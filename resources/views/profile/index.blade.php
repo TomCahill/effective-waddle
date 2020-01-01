@@ -4,17 +4,29 @@
 <div class="container">
   <div class="row">
     <div class="col-3 p-5">
-      <img class="rounded-circle" src="https://scontent-lhr3-1.cdninstagram.com/v/t51.2885-19/s150x150/49332649_2224289937827922_3001674968690851840_n.jpg?_nc_ht=scontent-lhr3-1.cdninstagram.com&oh=5e381dd9c1c6d1516b50d8d5fafc56fe&oe=5E6D9D61" alt="tomdotcahill's profile picture"/>
+      <img class="w-100 rounded-circle" src="{{ $user->profile->profileImage() }}" alt="{{ $user->username }}'s profile picture"/>
     </div>
     <div class="col-9 pt-5">
         <div class="d-flex justify-content-between align-items-baseline">
-            <h1>{{ $user->username }}</h1>
-            <a href="{{ route('post.create') }}">Add new Post</a>
+            <div class="d-flex align-items-center pb-3">
+                <div class="h4">{{ $user->username }}</div>
+
+                <follow-button user-id="{{ $user->id }}" follows="{{ $follows }}"></follow-button>
+            </div>
+
+            @can('update', $user->profile)
+                <a href="{{ route('post.create') }}">Add new Post</a>
+            @endcan
         </div>
+
+        @can('update', $user->profile)
+            <a href="{{ route('profile.edit', $user->id) }}">Edit Profile</a>
+        @endcan
+
         <div class="d-flex">
-          <div class="pr-5"><strong>{{ $user->posts->count() }}</strong> posts</div>
-          <div class="pr-5"><strong>52</strong> followers</div>
-          <div class="pr-5"><strong>42</strong> following</div>
+          <div class="pr-5"><strong>{{ $postCount }}</strong> posts</div>
+          <div class="pr-5"><strong>{{ $followersCount }}</strong> followers</div>
+          <div class="pr-5"><strong>{{ $followingCount }}</strong> following</div>
         </div>
         <div class="pt-4 font-weight-bold">{{ $user->profile->title }}</div>
         <div>{{ $user->profile->description }}</div>
@@ -24,7 +36,9 @@
   <div class="row pt-5">
     @foreach ($user->posts as $post)
         <div class="col-4">
-            <img class="w-100" src="/storage/{{ $post->image }}"/>
+            <a href="{{ route('post.show', $post->id) }}">
+                <img class="w-100" src="/storage/{{ $post->image }}"/>
+            </a>
         </div>
     @endforeach
   </div>
